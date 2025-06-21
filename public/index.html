@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiplayer</title>
+</head>
+    <body>
+        <h1>Multiplayer Lobby</h1>
+        <button id="createBtn">Create Lobby</button>
+        <input id="nameInput" placeholder="Enter Your Name">
+        <input id="joinCode" placeholder="Enter Lobby Code">
+        <button id="joinBtn">Join Lobby</button>
+
+        <h2 id="lobbyInfo"></h2>
+        <ul id="players"></ul>
+
+        <input id="msgInput" placeholder="Message">
+        <button id="sendBtn">Send</button>
+        <ul id="messages"></ul>
+
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="client.js"></script>
+    </body>
+</html>
