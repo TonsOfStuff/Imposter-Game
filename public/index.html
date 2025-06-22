@@ -19,6 +19,16 @@
         <button id="sendBtn">Send</button>
         <ul id="messages"></ul>
 
+
+        <div id="hostPanel" style="display: none;">
+        <h2>You are the Host</h2>
+        <button id="startGameBtn">Start Game</button>
+        </div>
+
+        <div id="playerPanel" style="display: none;">
+        <h2>Waiting for host to start the game...</h2>
+        </div>
+
         <script src="/socket.io/socket.io.js"></script>
         <script src="client.js"></script>
     </body>

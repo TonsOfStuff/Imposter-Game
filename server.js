@@ -21,9 +21,9 @@ io.on('connection', (socket) => {
     socket.join(code);
     lobbies[code] = {
       host: socket.id,
-      players: [{id: socket.id, name}]
+      players: [{id: socket.id, name, role: "Host"}]
     };
-    socket.emit('lobbyCreated', code);
+    socket.emit('lobbyCreated', {code, role: "Host"});
 
     //lobbies[code].players.push({ id: socket.id, name });
     io.to(code).emit('updatePlayers', lobbies[code].players);
@@ -34,9 +34,11 @@ io.on('connection', (socket) => {
     code = code.toUpperCase();
     if (lobbies[code]) {
         socket.join(code);
-        lobbies[code].players.push({ id: socket.id, name });
+        const role = (socket.id === lobbies[code].host) ? 'Host' : 'Player';
+        lobbies[code].players.push({ id: socket.id, name, role: role });
         socketToLobby[socket.id] = code;
-        socket.emit('lobbyJoined', code);
+
+        socket.emit('lobbyJoined', {code, role});
         io.to(code).emit('updatePlayers', lobbies[code].players);
     } else {
         socket.emit('errorMsg', 'Lobby not found');

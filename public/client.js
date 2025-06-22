@@ -1,5 +1,20 @@
 const socket = io();
 
+function renderLobby(){
+  if (currentRole === "Host"){
+    document.getElementById('hostPanel').style.display = 'block';
+    document.getElementById('playerPanel').style.display = 'none';
+  }else{
+    document.getElementById('hostPanel').style.display = 'none';
+    document.getElementById('playerPanel').style.display = 'block';
+  }
+}
+
+
+
+
+
+
 document.getElementById('createBtn').onclick = () => {
 const name = document.getElementById("nameInput").value.trim() || "Host";
   socket.emit('createLobby', name);
@@ -12,15 +27,20 @@ document.getElementById('joinBtn').onclick = () => {
 };
 
 let currentLobby = '';
+let currentRole = '';
 
-socket.on('lobbyCreated', (code) => {
+socket.on('lobbyCreated', ({code, role}) => {
   currentLobby = code;
+  currentRole = role;
   document.getElementById('lobbyInfo').textContent = `Lobby Code: ${code}`;
+  renderLobby();
 });
 
-socket.on('lobbyJoined', (code) => {
+socket.on('lobbyJoined', ({code, role}) => {
   currentLobby = code;
+  currentRole = role;
   document.getElementById('lobbyInfo').textContent = `Joined Lobby: ${code}`;
+  renderLobby();
 });
 
 
@@ -31,7 +51,12 @@ socket.on('updatePlayers', (players) => {
   ul.innerHTML = '';
   players.forEach(p => {
     const li = document.createElement('li');
-    li.textContent = p.name + (p.id === socket.id ? ' (you)' : '');
+    li.textContent = p.name
+    if (p.id === socket.id){
+      li.textContent += " (you)";
+    }else if (p.role === "Host"){
+      li.textContent += " (Host)"
+    }
     ul.appendChild(li);
   });
 });
