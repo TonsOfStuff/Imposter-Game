@@ -23,6 +23,7 @@ io.on('connection', (socket) => {
       host: socket.id,
       players: [{id: socket.id, name, role: "Host"}]
     };
+    socketToLobby[socket.id] = code;
     socket.emit('lobbyCreated', {code, role: "Host"});
 
     //lobbies[code].players.push({ id: socket.id, name });
@@ -63,7 +64,18 @@ io.on('connection', (socket) => {
         if (lobbies[code].players.length === 0) delete lobbies[code];
         delete socketToLobby[socket.id];
     }
-    });
+  });
+
+    
+  socket.on('startGame', () => {
+    console.log("recieved");
+    const code = socketToLobby[socket.id];
+    const lobby = lobbies[code];
+
+    if (!lobby || socket.id !== lobby.host) return;
+
+    io.to(code).emit('gameStarted');
+  });
 });
 
 server.listen(process.env.PORT || 3000, () => {

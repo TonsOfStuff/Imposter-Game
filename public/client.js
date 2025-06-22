@@ -11,7 +11,20 @@ function renderLobby(){
 }
 
 
+document.getElementById('startGameBtn').onclick = () => {
+  socket.emit('startGame');
+};
 
+socket.on("gameStarted", () => {
+  document.getElementById('hostPanel').style.display = 'none';
+  document.getElementById('playerPanel').style.display = 'none';
+
+  if (currentRole === "Host") {
+    document.getElementById('hostGameScreen').style.display = 'block';
+  } else {
+    document.getElementById('playerGameScreen').style.display = 'block';
+  }
+})
 
 
 

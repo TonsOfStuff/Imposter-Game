@@ -19,7 +19,7 @@
         <button id="sendBtn">Send</button>
         <ul id="messages"></ul>
 
-
+        <!--Panels-->
         <div id="hostPanel" style="display: none;">
         <h2>You are the Host</h2>
         <button id="startGameBtn">Start Game</button>
@@ -27,6 +27,14 @@
 
         <div id="playerPanel" style="display: none;">
         <h2>Waiting for host to start the game...</h2>
+        </div>
+
+
+        <div id = "hostGameScreen" style="display: none;">
+            <input>
+        </div>
+        <div id = "playerGameScreen" style="display: none;">
+            Waiting for host...
         </div>
 
         <script src="/socket.io/socket.io.js"></script>
