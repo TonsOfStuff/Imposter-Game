@@ -17,9 +17,13 @@ document.getElementById('startGameBtn').onclick = () => {
 
 document.getElementById("sendButton").onclick = () => {
   const selections = Array.from(document.querySelectorAll(".questionInput")).map(input => input.value);
-  console.log(selections);
-  socket.emit("sendQuestions", selections)
+  socket.emit("sendQuestions", selections);
+  console.log("emitted");
 };
+
+socket.on("question", (question) => {
+  document.getElementById("playerGameScreen").textContent = question;
+});
 
 socket.on("gameStarted", (players) => {
   document.getElementById('hostPanel').style.display = 'none';

@@ -68,7 +68,6 @@ io.on('connection', (socket) => {
 
     
   socket.on('startGame', () => {
-    console.log("recieved");
     const code = socketToLobby[socket.id];
     const lobby = lobbies[code];
 
@@ -76,6 +75,17 @@ io.on('connection', (socket) => {
 
     io.to(code).emit('gameStarted', lobbies[code].players);
   });
+
+
+  socket.on("sendQuestions", (selections) => {
+    const code = socketToLobby[socket.id];
+    const players = lobbies[code].players.filter(p => p.id !== lobbies[code].host);
+
+    players.forEach((player,i) => {
+      const select = selections[i]
+      io.to(player.id).emit("question", select);
+    });
+  })
 });
 
 server.listen(process.env.PORT || 3000, () => {
