@@ -74,7 +74,7 @@ io.on('connection', (socket) => {
 
     if (!lobby || socket.id !== lobby.host) return;
 
-    io.to(code).emit('gameStarted');
+    io.to(code).emit('gameStarted', lobbies[code].players);
   });
 });
 

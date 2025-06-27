@@ -15,12 +15,23 @@ document.getElementById('startGameBtn').onclick = () => {
   socket.emit('startGame');
 };
 
-socket.on("gameStarted", () => {
+socket.on("gameStarted", (players) => {
   document.getElementById('hostPanel').style.display = 'none';
   document.getElementById('playerPanel').style.display = 'none';
 
   if (currentRole === "Host") {
-    document.getElementById('hostGameScreen').style.display = 'block';
+    const hostGameScreen = document.getElementById('hostGameScreen');
+    hostGameScreen.style.display = 'block';
+    players.forEach(player => {
+      const newInput = document.createElement("input");
+      newInput.placeholder = "Question for " + player.name;
+
+      hostGameScreen.appendChild(newInput);
+    });
+    
+
+
+    
   } else {
     document.getElementById('playerGameScreen').style.display = 'block';
   }
