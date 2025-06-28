@@ -85,7 +85,13 @@ io.on('connection', (socket) => {
       const select = selections[i]
       io.to(player.id).emit("question", select);
     });
-  })
+  });
+
+
+  socket.on("answer", (answer) => {
+    const code = socketToLobby[socket.id];
+    io.to(lobbies[code].host).emit("fetchAnswer", answer);
+  });
 });
 
 server.listen(process.env.PORT || 3000, () => {

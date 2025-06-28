@@ -17,13 +17,32 @@ document.getElementById('startGameBtn').onclick = () => {
 
 document.getElementById("sendButton").onclick = () => {
   const selections = Array.from(document.querySelectorAll(".questionInput")).map(input => input.value);
+  document.querySelectorAll(".questionInput").forEach(element => {
+    element.remove();
+  });
   socket.emit("sendQuestions", selections);
-  console.log("emitted");
 };
 
 socket.on("question", (question) => {
-  document.getElementById("playerGameScreen").textContent = question;
+  const gameScreen = document.getElementById("playerGameScreen")
+  gameScreen.textContent = question;
+  const answer = document.createElement("input");
+  answer.placeholder = "Answer...";
+  const answerButton = document.createElement("button");
+  answerButton.innerText = "Submit"
+  answerButton.addEventListener("click", () => {
+    socket.emit("answer", answer.value);
+  });
+
+  gameScreen.appendChild(answer);
+  gameScreen.appendChild(answerButton);
 });
+
+socket.on("fetchAnswer", (answer) => {
+  const gameScreen = document.getElementById("hostGameScreen");
+  gameScreen.innerText = "recieved";
+  
+})
 
 socket.on("gameStarted", (players) => {
   document.getElementById('hostPanel').style.display = 'none';
