@@ -17,7 +17,7 @@ document.getElementById('startGameBtn').onclick = () => {
 
 document.getElementById("sendButton").onclick = () => {
   const selections = Array.from(document.querySelectorAll(".questionInput")).map(input => input.value);
-  document.querySelectorAll(".questionInput").forEach(element => {
+  document.querySelector("#hostGameScreen").childNodes.forEach(element => {
     element.remove();
   });
   socket.emit("sendQuestions", selections);
@@ -40,7 +40,7 @@ socket.on("question", (question) => {
 
 socket.on("fetchAnswer", (answer) => {
   const gameScreen = document.getElementById("hostGameScreen");
-  gameScreen.innerText = "recieved";
+  gameScreen.innerText += answer;
   
 })
 
