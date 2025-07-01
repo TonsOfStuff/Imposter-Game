@@ -17,13 +17,18 @@ document.getElementById('startGameBtn').onclick = () => {
 
 document.getElementById("sendButton").onclick = () => {
   const selections = Array.from(document.querySelectorAll(".questionInput")).map(input => input.value);
-  document.querySelector("#hostGameScreen").childNodes.forEach(element => {
+  const gameScreen = document.querySelector("#hostGameScreen")
+  Array.from(gameScreen.children).forEach(element => {
     element.remove();
   });
+
+  const list = document.createElement("ul");
+  gameScreen.appendChild(list);
+
   socket.emit("sendQuestions", selections);
 };
 
-socket.on("question", (question) => {
+socket.on("question", ({question, name}) => {
   const gameScreen = document.getElementById("playerGameScreen")
   gameScreen.textContent = question;
   const answer = document.createElement("input");
@@ -31,7 +36,7 @@ socket.on("question", (question) => {
   const answerButton = document.createElement("button");
   answerButton.innerText = "Submit"
   answerButton.addEventListener("click", () => {
-    socket.emit("answer", answer.value);
+    socket.emit("answer", {answer: answer.value, name});
   });
 
   gameScreen.appendChild(answer);
@@ -39,8 +44,10 @@ socket.on("question", (question) => {
 });
 
 socket.on("fetchAnswer", (answer) => {
-  const gameScreen = document.getElementById("hostGameScreen");
-  gameScreen.innerText += answer;
+  const gameScreen = document.getElementById("hostGameScreen").children[0];
+  const li = document.createElement("li");
+  li.innerText = answer;
+  gameScreen.appendChild(li);
   
 })
 

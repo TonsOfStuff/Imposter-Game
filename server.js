@@ -83,14 +83,14 @@ io.on('connection', (socket) => {
 
     players.forEach((player,i) => {
       const select = selections[i]
-      io.to(player.id).emit("question", select);
+      io.to(player.id).emit("question", {question: select, name: player.name});
     });
   });
 
 
-  socket.on("answer", (answer) => {
+  socket.on("answer", ({answer, name}) => {
     const code = socketToLobby[socket.id];
-    io.to(lobbies[code].host).emit("fetchAnswer", answer);
+    io.to(lobbies[code].host).emit("fetchAnswer", (name + ": " + answer));
   });
 });
 
