@@ -1,6 +1,7 @@
 const socket = io();
 
 function renderLobby(){
+  document.getElementById("joinContainer").style.display = "none";
   if (currentRole === "Host"){
     document.getElementById('hostPanel').style.display = 'block';
     document.getElementById('playerPanel').style.display = 'none';
